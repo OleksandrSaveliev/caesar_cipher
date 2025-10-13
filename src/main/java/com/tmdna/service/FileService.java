@@ -1,6 +1,6 @@
 package com.tmdna.service;
 
-import com.tmdna.model.FileSuffix;
+import model.FileSuffix;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

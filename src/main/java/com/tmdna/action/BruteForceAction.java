@@ -10,7 +10,6 @@ public class BruteForceAction extends AbstractAction{
         this.fileService = fileService;
     }
 
-    //TODO implement
     @Override
     public void execute(ProgramOptions options) {
 
