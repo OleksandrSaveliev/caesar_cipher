@@ -8,7 +8,7 @@ import com.tmdna.model.Command;
 import com.tmdna.model.ProgramOptions;
 import com.tmdna.service.FileService;
 import com.tmdna.ui.Cli;
-import com.tmdna.utils.ArgsParser;
+import com.tmdna.utils.ProgramOptionsProvider;
 
 import java.util.Map;
 
@@ -18,7 +18,7 @@ public class ApplicationRunner {
         ProgramOptions options;
 
         if (args.length > 0) {
-            options = new ArgsParser(args).getProgramOptions();
+            options = ProgramOptionsProvider.getFromArgs(args);
         } else {
             options = new Cli().getProgramOptions();
         }

@@ -2,7 +2,7 @@ package com.tmdna.ui;
 
 import com.tmdna.model.Command;
 import com.tmdna.model.ProgramOptions;
-import com.tmdna.utils.ProgramOptionsBuilder;
+import com.tmdna.utils.ProgramOptionsProvider;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,22 +29,7 @@ public class Cli {
                     continue;
                 }
 
-                return switch (command) {
-                    case Command.ENCRYPT, Command.DECRYPT -> ProgramOptionsBuilder.create()
-                            .withCommand(command)
-                            .withFilePath(readFilePath())
-                            .withKey(readKey())
-                            .build();
-                    case Command.BRUTE_FORCE -> ProgramOptionsBuilder.create()
-                            .withCommand(command)
-                            .withFilePath(readFilePath())
-                            .build();
-                    case Command.EXIT -> ProgramOptionsBuilder.create()
-                            .withCommand(command)
-                            .build();
-
-                    default -> throw new IllegalStateException("Unexpected value: " + command);
-                };
+                return ProgramOptionsProvider.getFromParams(command, readFilePath(), readKey());
 
             } catch (NumberFormatException e) {
                 System.out.println(INVALID_OPTION_MSG);
