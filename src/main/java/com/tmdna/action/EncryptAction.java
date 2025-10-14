@@ -9,10 +9,9 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class EncryptAction extends AbstractAction {
-    private final FileService fileService;
 
     public EncryptAction(FileService fileService) {
-        this.fileService = fileService;
+        super(fileService);
     }
 
     @Override
