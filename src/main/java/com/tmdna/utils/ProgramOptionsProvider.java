@@ -6,6 +6,9 @@ import com.tmdna.model.ProgramOptions;
 
 public class ProgramOptionsProvider {
 
+    private ProgramOptionsProvider() {
+    }
+
     public static ProgramOptions getFromArgs(String[] args) {
         Command command = ProgramOptionsValidator.validateCommand(args[0]);
         String filePath = args[1];
@@ -13,7 +16,6 @@ public class ProgramOptionsProvider {
 
         return getProgramOptions(command, filePath, key);
     }
-
 
     public static ProgramOptions getFromParams(Command command, String filePath,String key) {
         return getProgramOptions(command, filePath, key);

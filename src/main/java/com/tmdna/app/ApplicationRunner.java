@@ -10,26 +10,17 @@ import com.tmdna.service.FileService;
 import com.tmdna.ui.Cli;
 import com.tmdna.utils.ProgramOptionsProvider;
 
-import java.util.Map;
-
 public class ApplicationRunner {
 
-    public static void run(String[] args) {
-        ProgramOptions options;
+    private ApplicationRunner() {
+    }
 
-        if (args.length > 0) {
-            options = ProgramOptionsProvider.getFromArgs(args);
-        } else {
-            options = new Cli().getProgramOptions();
-        }
+    public static void run(String[] args) {
+        ProgramOptions options = (args.length > 0)
+                ? ProgramOptionsProvider.getFromArgs(args)
+                : new Cli().getProgramOptions();
 
         FileService fileService = new FileService();
-
-        Map<Command, AbstractAction> actions = Map.of(
-                Command.ENCRYPT, new EncryptAction(fileService),
-                Command.DECRYPT, new DecryptAction(fileService),
-                Command.BRUTE_FORCE, new BruteForceAction(fileService)
-        );
 
         Command command = options.command();
 
@@ -38,7 +29,12 @@ public class ApplicationRunner {
             return;
         }
 
-        AbstractAction action = actions.get(command);
+        AbstractAction action = switch (command) {
+            case ENCRYPT -> new EncryptAction(fileService);
+            case DECRYPT -> new DecryptAction(fileService);
+            case BRUTE_FORCE -> new BruteForceAction(fileService);
+            default -> throw new IllegalStateException("Unexpected command: " + command);
+        };
 
         action.execute(options);
     }
