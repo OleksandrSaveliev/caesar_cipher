@@ -18,11 +18,6 @@ public class ProgramOptionsBuilder {
         return new ProgramOptionsBuilder();
     }
 
-    public ProgramOptionsBuilder withCommand(String commandStr) {
-        this.command = ProgramOptionsValidator.validateCommand(commandStr);
-        return this;
-    }
-
     public ProgramOptionsBuilder withCommand(Command command) {
         this.command = command;
         return this;
