@@ -31,7 +31,7 @@ public class ApplicationRunner {
                 Command.BRUTE_FORCE, new BruteForceAction(fileService)
         );
 
-        Command command = options.getCommand();
+        Command command = options.command();
 
         if (command == Command.EXIT) {
             System.out.println("Goodbye!");

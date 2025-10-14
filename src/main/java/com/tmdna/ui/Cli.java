@@ -18,8 +18,6 @@ public class Cli {
     public ProgramOptions getProgramOptions() {
         Command command;
 
-        int choice = 0;
-
         while (true) {
             printBaseMenu();
 

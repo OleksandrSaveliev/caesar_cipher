@@ -16,8 +16,8 @@ public class EncryptAction extends AbstractAction {
 
     @Override
     public void execute(ProgramOptions options) {
-        Path filePath = options.getFilePath();
-        int key = options.getKey();
+        Path filePath = options.filePath();
+        int key = options.key();
 
         CaesarCipher cipher = new CaesarCipher(key);
         List<String> source = fileService.readText(filePath);
