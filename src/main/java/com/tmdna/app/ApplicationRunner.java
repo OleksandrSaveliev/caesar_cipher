@@ -1,9 +1,6 @@
 package com.tmdna.app;
 
-import com.tmdna.action.AbstractAction;
-import com.tmdna.action.BruteForceAction;
-import com.tmdna.action.DecryptAction;
-import com.tmdna.action.EncryptAction;
+import com.tmdna.action.*;
 import com.tmdna.model.Command;
 import com.tmdna.model.ProgramOptions;
 import com.tmdna.service.FileService;
@@ -24,15 +21,11 @@ public class ApplicationRunner {
 
         Command command = options.command();
 
-        if (command == Command.EXIT) {
-            System.out.println("Goodbye!");
-            return;
-        }
-
         AbstractAction action = switch (command) {
             case ENCRYPT -> new EncryptAction(fileService);
             case DECRYPT -> new DecryptAction(fileService);
             case BRUTE_FORCE -> new BruteForceAction(fileService);
+            case EXIT -> new ExitAction();
             default -> throw new IllegalStateException("Unexpected command: " + command);
         };
 
