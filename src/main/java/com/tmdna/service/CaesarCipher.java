@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CaesarCipher {
-    private static final String LATYN_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    private static final String LATIN_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private static final String CYRILLIC_ALPHABET = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯабвгґдеєжзийіїйклмнопрстуфхцчшщьюя";
     private Integer key;
 
@@ -42,32 +42,8 @@ public class CaesarCipher {
         return bestResult;
     }
 
-    private double calculateFrequencyScore(List<String> text, String alphabet) {
-        String joined = String.join("", text).toLowerCase();
-
-        String commonLatin = "etaoinshrdlcumwfgypbvkjxqz";
-        String commonCyrillic = "оаинетсрвлкмдпуяїєгбчйхжшюцщьфзґ";
-
-        String common = alphabet.equals(CYRILLIC_ALPHABET) ? commonCyrillic : commonLatin;
-
-        double score = 0.0;
-        int totalLetters = 0;
-
-        for (char c : joined.toCharArray()) {
-            if (Character.isLetter(c)) {
-                totalLetters++;
-                int idx = common.indexOf(c);
-                if (idx != -1) {
-                    score += (common.length() - idx);
-                }
-            }
-        }
-
-        return totalLetters == 0 ? 0 : score / totalLetters;
-    }
-
     private List<String> process(List<String> text, int shift) {
-       final String ALPHABET = detectAlphabet(text);
+        final String ALPHABET = detectAlphabet(text);
         List<String> result = new ArrayList<>(text.size());
 
         for (String line : text) {
@@ -92,6 +68,30 @@ public class CaesarCipher {
         return result;
     }
 
+    private double calculateFrequencyScore(List<String> text, String alphabet) {
+        String joined = String.join("", text).toLowerCase();
+
+        String commonLatin = "etaoinshrdlcumwfgypbvkjxqz";
+        String commonCyrillic = "оаинетсрвлкмдпуяїєгбчйхжшюцщьфзґ";
+
+        String common = alphabet.equals(CYRILLIC_ALPHABET) ? commonCyrillic : commonLatin;
+
+        double score = 0.0;
+        int totalLetters = 0;
+
+        for (char c : joined.toCharArray()) {
+            if (Character.isLetter(c)) {
+                totalLetters++;
+                int idx = common.indexOf(c);
+                if (idx != -1) {
+                    score += (common.length() - idx);
+                }
+            }
+        }
+
+        return totalLetters == 0 ? 0 : score / totalLetters;
+    }
+
     private String detectAlphabet(List<String> text) {
         for (String line : text) {
             for (char ch : line.toCharArray()) {
@@ -104,7 +104,7 @@ public class CaesarCipher {
                 }
             }
         }
-        return LATYN_ALPHABET;
+        return LATIN_ALPHABET;
     }
 
 }
