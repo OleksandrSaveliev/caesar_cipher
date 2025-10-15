@@ -1,5 +1,6 @@
 package com.tmdna.service;
 
+import com.tmdna.exceptions.FileOperationException;
 import com.tmdna.model.FileSuffix;
 
 import java.io.IOException;
@@ -7,7 +8,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.Collections;
 import java.util.List;
 
 public class FileService {
@@ -16,17 +16,15 @@ public class FileService {
         try {
             return Files.readAllLines(path, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            System.err.println("Failed to read file: " + e.getMessage());
+            throw new FileOperationException("Failed to read file: " + path, e);
         }
-
-        return Collections.emptyList();
     }
 
     public void writeText(Path path, List<String> text) {
         try {
             Files.write(path, text, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
-            System.err.println("Failed to write to file: " + e.getMessage());
+            throw new FileOperationException("Failed to write file: " + path, e);
         }
     }
 
