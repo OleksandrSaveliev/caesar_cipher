@@ -17,6 +17,8 @@ public class Cli {
 
     public ProgramOptions getProgramOptions() {
         Command command;
+        String filePath;
+        String key;
 
         while (true) {
             printBaseMenu();
@@ -29,7 +31,15 @@ public class Cli {
                     continue;
                 }
 
-                return ProgramOptionsProvider.getFromParams(command, readFilePath(), readKey());
+                if (command != Command.BRUTE_FORCE) {
+                    filePath = readFilePath();
+                    key = readKey();
+                } else {
+                    filePath = readFilePath();
+                    key = null;
+                }
+
+                return ProgramOptionsProvider.getFromParams(command, filePath, key);
 
             } catch (NumberFormatException e) {
                 System.out.println(INVALID_OPTION_MSG);

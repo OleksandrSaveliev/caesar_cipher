@@ -26,6 +26,6 @@ public class DecryptAction extends AbstractAction {
         Path newFilePath = fileService.addSuffix(filePath, FileSuffix.DECRYPTED);
         fileService.writeText(newFilePath, result);
 
-        System.out.println("File encrypted successfully: " + newFilePath);
+        System.out.println("File decrypted successfully: " + newFilePath);
     }
 }
