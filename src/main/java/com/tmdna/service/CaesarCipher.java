@@ -15,11 +15,11 @@ public class CaesarCipher {
    public CaesarCipher() {}
 
     public List<String> encrypt(List<String> text) {
-        return process(text, key);
+        return process(text, key, detectAlphabet(text));
     }
 
     public List<String> decrypt(List<String> text) {
-        return process(text, -key);
+        return process(text, -key, detectAlphabet(text));
     }
 
     public List<String> bruteForceDecrypt(List<String> cipherText) {
@@ -30,7 +30,7 @@ public class CaesarCipher {
         double bestScore = Double.NEGATIVE_INFINITY;
 
         for (int key = 1; key < maxShift; key++) {
-            List<String> attempt = process(cipherText, -key);
+            List<String> attempt = process(cipherText, -key, ALPHABET);
             double score = calculateFrequencyScore(attempt, ALPHABET);
 
             if (score > bestScore) {
@@ -42,8 +42,7 @@ public class CaesarCipher {
         return bestResult;
     }
 
-    private List<String> process(List<String> text, int shift) {
-        final String ALPHABET = detectAlphabet(text);
+    private List<String> process(List<String> text, int shift, final String ALPHABET) {
         List<String> result = new ArrayList<>(text.size());
 
         for (String line : text) {
