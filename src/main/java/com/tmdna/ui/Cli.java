@@ -26,22 +26,17 @@ public class Cli {
             try {
                 command = readCommand();
 
-                switch (command) {
-                    case ENCRYPT, DECRYPT -> {
-                        filePath = readFilePath();
-                        key = readKey();
-                        return ProgramOptionsProvider.getFromParams(command, filePath, key);
-                    }
-                    case BRUTE_FORCE -> {
-                        filePath = readFilePath();
-                        return ProgramOptionsProvider.getFromParams(command, filePath, key);
-                    }
-                    case EXIT -> {
-                        return ProgramOptionsProvider.getFromParams(command, filePath, key);
-                    }
-                    case INVALID -> System.out.println(INVALID_OPTION_MSG);
+                if (command == Command.ENCRYPT || command == Command.DECRYPT) {
+                    filePath = readFilePath();
+                    key = readKey();
+                } else if (command == Command.BRUTE_FORCE) {
+                    filePath = readFilePath();
+                } else if (command == Command.INVALID) {
+                    System.out.println(INVALID_OPTION_MSG);
+                    continue;
                 }
 
+                return ProgramOptionsProvider.getFromParams(command, filePath, key);
             } catch (IOException e) {
                 throw new RuntimeException("I/O error reading from console: " + e.getMessage());
             }
