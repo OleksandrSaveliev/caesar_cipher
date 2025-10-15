@@ -17,7 +17,7 @@ public class ProgramOptionsProvider {
         return getProgramOptions(command, filePath, key);
     }
 
-    public static ProgramOptions getFromParams(Command command, String filePath,String key) {
+    public static ProgramOptions getFromParams(Command command, String filePath, String key) {
         return getProgramOptions(command, filePath, key);
     }
 

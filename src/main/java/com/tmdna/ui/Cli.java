@@ -17,8 +17,8 @@ public class Cli {
 
     public ProgramOptions getProgramOptions() {
         Command command;
-        String filePath;
-        String key;
+        String filePath = null;
+        String key = null;
 
         while (true) {
             printBaseMenu();
@@ -26,25 +26,24 @@ public class Cli {
             try {
                 command = readCommand();
 
-                if (command == Command.INVALID) {
-                    System.out.println(INVALID_OPTION_MSG);
-                    continue;
+                switch (command) {
+                    case ENCRYPT, DECRYPT -> {
+                        filePath = readFilePath();
+                        key = readKey();
+                        return ProgramOptionsProvider.getFromParams(command, filePath, key);
+                    }
+                    case BRUTE_FORCE -> {
+                        filePath = readFilePath();
+                        return ProgramOptionsProvider.getFromParams(command, filePath, key);
+                    }
+                    case EXIT -> {
+                        return ProgramOptionsProvider.getFromParams(command, filePath, key);
+                    }
+                    case INVALID -> System.out.println(INVALID_OPTION_MSG);
                 }
 
-                if (command != Command.BRUTE_FORCE) {
-                    filePath = readFilePath();
-                    key = readKey();
-                } else {
-                    filePath = readFilePath();
-                    key = null;
-                }
-
-                return ProgramOptionsProvider.getFromParams(command, filePath, key);
-
-            } catch (NumberFormatException e) {
-                System.out.println(INVALID_OPTION_MSG);
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException("I/O error reading from console: " + e.getMessage());
             }
         }
     }
