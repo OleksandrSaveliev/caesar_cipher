@@ -20,7 +20,7 @@ public class BruteForceAction extends AbstractAction{
 
         CaesarCipher cipher = new CaesarCipher();
         List<String> source = fileService.readText(filePath);
-        List<String> result = cipher.decrypt(source);
+        List<String> result = cipher.bruteForceDecrypt(source);
 
         Path newFilePath = fileService.addSuffix(filePath, FileSuffix.DECRYPTED);
         fileService.writeText(newFilePath, result);
