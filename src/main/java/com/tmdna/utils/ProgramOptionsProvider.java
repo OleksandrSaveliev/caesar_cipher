@@ -2,14 +2,14 @@ package com.tmdna.utils;
 
 import com.tmdna.model.Command;
 import com.tmdna.model.ProgramOptions;
+import com.tmdna.ui.Cli;
+
+import java.io.IOException;
 
 
 public class ProgramOptionsProvider {
 
-    private ProgramOptionsProvider() {
-    }
-
-    public static ProgramOptions getFromArgs(String[] args) {
+    public ProgramOptions getFromArgs(String[] args) {
         Command command = ProgramOptionsValidator.validateCommand(args[0]);
         String filePath = args[1];
         String key = args[2];
@@ -17,11 +17,35 @@ public class ProgramOptionsProvider {
         return getProgramOptions(command, filePath, key);
     }
 
-    public static ProgramOptions getFromParams(Command command, String filePath, String key) {
-        return getProgramOptions(command, filePath, key);
+    public ProgramOptions getFromCli(Cli cli) {
+        Command command;
+        String filePath = null;
+        String key = null;
+
+        while (true) {
+            cli.printBaseMenu();
+
+            try {
+                command = cli.readCommand();
+
+                if (command == Command.ENCRYPT || command == Command.DECRYPT) {
+                    filePath = cli.readFilePath();
+                    key = cli.readKey();
+                } else if (command == Command.BRUTE_FORCE) {
+                    filePath = cli.readFilePath();
+                } else if (command == Command.INVALID) {
+                    cli.printInvalidOption();
+                    continue;
+                }
+
+                return getProgramOptions(command, filePath, key);
+            } catch (IOException e) {
+                throw new RuntimeException("I/O error reading from console: " + e.getMessage());
+            }
+        }
     }
 
-    private static ProgramOptions getProgramOptions(Command command, String filePath, String key) {
+    private ProgramOptions getProgramOptions(Command command, String filePath, String key) {
         return switch (command) {
             case Command.ENCRYPT, Command.DECRYPT -> ProgramOptionsBuilder.create()
                     .withCommand(command)

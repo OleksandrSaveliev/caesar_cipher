@@ -13,9 +13,11 @@ public class ApplicationRunner {
     }
 
     public static void run(String[] args) {
+        ProgramOptionsProvider provider = new ProgramOptionsProvider();
+
         ProgramOptions options = (args.length > 0)
-                ? ProgramOptionsProvider.getFromArgs(args)
-                : new Cli().getProgramOptions();
+                ? provider.getFromArgs(args)
+                : provider.getFromCli(new Cli());
 
         FileService fileService = new FileService();
 

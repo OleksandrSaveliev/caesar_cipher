@@ -1,8 +1,6 @@
 package com.tmdna.ui;
 
 import com.tmdna.model.Command;
-import com.tmdna.model.ProgramOptions;
-import com.tmdna.utils.ProgramOptionsProvider;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,37 +11,9 @@ public class Cli {
     private static final String KEY_MSG = "Enter the key: ";
     private static final String INVALID_OPTION_MSG = "Invalid option, try again.";
 
-    private final BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+    final BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
 
-    public ProgramOptions getProgramOptions() {
-        Command command;
-        String filePath = null;
-        String key = null;
-
-        while (true) {
-            printBaseMenu();
-
-            try {
-                command = readCommand();
-
-                if (command == Command.ENCRYPT || command == Command.DECRYPT) {
-                    filePath = readFilePath();
-                    key = readKey();
-                } else if (command == Command.BRUTE_FORCE) {
-                    filePath = readFilePath();
-                } else if (command == Command.INVALID) {
-                    System.out.println(INVALID_OPTION_MSG);
-                    continue;
-                }
-
-                return ProgramOptionsProvider.getFromParams(command, filePath, key);
-            } catch (IOException e) {
-                throw new RuntimeException("I/O error reading from console: " + e.getMessage());
-            }
-        }
-    }
-
-    private Command readCommand() throws IOException {
+    public Command readCommand() throws IOException {
         int choice = Integer.parseInt(console.readLine());
         return switch (choice) {
             case 1 -> Command.ENCRYPT;
@@ -54,11 +24,11 @@ public class Cli {
         };
     }
 
-    private String readKey() throws IOException {
+    public String readKey() throws IOException {
         return ask(KEY_MSG);
     }
 
-    private String readFilePath() throws IOException {
+    public String readFilePath() throws IOException {
         return ask(FILE_PATH_MSG);
     }
 
@@ -67,11 +37,15 @@ public class Cli {
         return console.readLine();
     }
 
-    private void printBaseMenu() {
+    public void printBaseMenu() {
         System.out.println("Select an action:");
         System.out.println("1. Encrypt file.");
         System.out.println("2. Decrypt file.");
         System.out.println("3. Brut-force file.");
         System.out.println("4. Exit.");
+    }
+
+    public void printInvalidOption() {
+        System.out.println(INVALID_OPTION_MSG);
     }
 }
