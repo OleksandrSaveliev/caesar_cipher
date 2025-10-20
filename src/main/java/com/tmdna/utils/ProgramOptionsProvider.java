@@ -1,5 +1,6 @@
 package com.tmdna.utils;
 
+import com.tmdna.exceptions.IllegalArgumentsCountException;
 import com.tmdna.model.Command;
 import com.tmdna.model.ProgramOptions;
 import com.tmdna.ui.Cli;
@@ -11,6 +12,12 @@ public class ProgramOptionsProvider {
 
     public ProgramOptions getFromArgs(String[] args) {
         Command command = ProgramOptionsValidator.validateCommand(args[0]);
+        if (command == Command.ENCRYPT || command == Command.DECRYPT  && args.length != 3) {
+            throw new IllegalArgumentsCountException("Invalid number of arguments. Expected 3 arguments: <command> <filePath> <key>");
+        }
+        if (command == Command.BRUTE_FORCE && args.length != 2) {
+            throw new IllegalArgumentsCountException("Invalid number of arguments. Expected 2 arguments: <command> <filePath>");
+        }
         String filePath = args[1];
         String key = args[2];
 
