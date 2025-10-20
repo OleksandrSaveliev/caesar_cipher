@@ -46,6 +46,8 @@ public class Cli {
     }
 
     public void printInvalidOption() {
+        System.out.println("--------------------------");
         System.out.println(INVALID_OPTION_MSG);
+        System.out.println("--------------------------");
     }
 }
