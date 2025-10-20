@@ -19,7 +19,7 @@ public class ProgramOptionsProvider {
             throw new IllegalArgumentsCountException("Invalid number of arguments. Expected 2 arguments: <command> <filePath>");
         }
         String filePath = args[1];
-        String key = args[2];
+        String key = command == Command.BRUTE_FORCE ? null : args[2];
 
         return getProgramOptions(command, filePath, key);
     }
